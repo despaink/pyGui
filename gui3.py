@@ -63,7 +63,7 @@ class XmlGUI:
         self.einlesenSucess.set("Einlesen Suceeded")
 
         #TODO: I don't know where you are using the udm file, but it's path name is being stored in self.udmFileName
-        #TODO: uncomment next line or modify it to do pass the correct value into WeldLineGrader
+        #TODO: uncomment next line or modify it to pass the correct value into WeldLineGrader
         #self.einlesenResult = WAA
 
     def weldOnClick(self):
