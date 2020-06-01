@@ -1,8 +1,10 @@
-# GUI imports
 from XML_Einleser import ReadToArray
 from UDM_Einleser import UDM_EinleserB
 from DataCombiner import Data_Combiner
 from UDM_Manipulator import UDMwriter
+
+# GUI imports
+import os
 import tkinter as tk
 from tkinter.filedialog import asksaveasfile, askopenfilename
 # end GUI imports
@@ -14,6 +16,7 @@ class XmlGUI:
         self.pressureFileName = ''
         self.temperatureFileName = ''
         self.weldFileName = ''
+        self.weldSurfaceMovementFileName = ''
         self.fillFileName = ''
         self.udmFileName = ''
         self.saveFileName = ''
@@ -29,6 +32,14 @@ class XmlGUI:
 
         self.saveResult = None
 
+        #GUI Buttons and Labels
+        self.pressureButton = None
+        self.temperatureButton = None
+        self.weldButton = None
+        self.weldSurfaceButton = None
+        self.fillButton = None
+        self.udmButton = None
+
     ### Begin Button Functions ###
     #writing all filenames in their variables
     def loadOnClick(self, filePurpose):
@@ -37,19 +48,28 @@ class XmlGUI:
             # Von Johannes Modifiziert
             self.einlesenSucess.set("Pressure File choosen")
             self.pressureFileName = fileName
+            self.pressureButton["text"] = os.path.relpath(fileName,'')
             if ".xml" not in fileName:
                 errmsg = "Wrong Pressure File Choosen"
                 self.einlesenSucess.set(errmsg)
+                self.pressureButton["text"] = "not an xml file..."
             #     bis hierhinn
             print(fileName)
         elif filePurpose == "Temperature":
             self.temperatureFileName = fileName
+            self.temperatureButton["text"] = os.path.relpath(fileName,'')
         elif filePurpose == "Weld":
             self.weldFileName = fileName
+            self.weldButton["text"] = os.path.relpath(fileName,'')
+        elif filePurpose == "Surface":
+            self.weldSurfaceMovementFileName = fileName
+            self.weldSurfaceButton["text"] = os.path.relpath(fileName,'')
         elif filePurpose == "Fill":
             self.fillFileName = fileName
+            self.fillButton["text"] = os.path.relpath(fileName,'')
         elif filePurpose == "UDM":
             self.udmFileName = fileName
+            self.udmButton["text"] = os.path.relpath(fileName,'')
 
     #Run Grader Button
     def einlesenOnClick(self):
@@ -57,7 +77,7 @@ class XmlGUI:
         b = self.temperatureFileName
         c = self.weldFileName
         d = self.fillFileName
-        e = "data\WeldLineSurfaceMovement.xml"
+        e = self.weldSurfaceMovementFileName
         f = self.udmFileName
 
         Nodes = UDM_EinleserB(f)
@@ -112,7 +132,7 @@ class XmlGUI:
         # initialize window
         window = tk.Tk()
         window.title("GUI 2.0")
-        window.geometry('725x275')
+        window.geometry('725x300')
 
         LABEL_WIDTH = 25
         LABEL_HEIGHT = 15
@@ -120,7 +140,7 @@ class XmlGUI:
         WRAPLENGTH = 150
 
         BUTTON_HEIGHT = 2
-        BUTTON_WIDTH = 23
+        BUTTON_WIDTH = 25
 
         # add widgets
 
@@ -132,50 +152,59 @@ class XmlGUI:
         )
         loadFrame.grid(column=1, row=0)
 
-        pressureButton = tk.Button(
+        self.pressureButton = tk.Button(
             loadFrame,
             text="Load Pressure.XML File",
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
             command=lambda: self.loadOnClick("Pressure")
         )
-        pressureButton.grid(column=1, row=0)
+        self.pressureButton.grid(column=1, row=0)
 
-        temperatureButton = tk.Button(
+        self.temperatureButton = tk.Button(
             loadFrame,
             text="Load Temperature.XML File",
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
             command=lambda: self.loadOnClick("Temperature")
         )
-        temperatureButton.grid(column=1, row=1)
+        self.temperatureButton.grid(column=1, row=1)
 
-        weldButton = tk.Button(
+        self.weldButton = tk.Button(
             loadFrame,
             text="Load WeldLines.XML File",
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
             command=lambda: self.loadOnClick("Weld")
         )
-        weldButton.grid(column=1, row=2)
+        self.weldButton.grid(column=1, row=2)
 
-        fillButton = tk.Button(
+        self.weldSurfaceButton = tk.Button(
+            loadFrame,
+            text="Load SurfaceMovement.XML File",
+            width=BUTTON_WIDTH,
+            height=BUTTON_HEIGHT,
+            command=lambda: self.loadOnClick("Surface")
+        )
+        self.weldSurfaceButton.grid(column=1, row=3)
+
+        self.fillButton = tk.Button(
             loadFrame,
             text="Load FillTime.XML File",
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
             command=lambda: self.loadOnClick("Fill")
         )
-        fillButton.grid(column=1, row=3)
+        self.fillButton.grid(column=1, row=4)
 
-        udmButton = tk.Button(
+        self.udmButton = tk.Button(
             loadFrame,
-            text="Load Udm File",
+            text="Load .udm File",
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
             command=lambda: self.loadOnClick("UDM")
         )
-        udmButton.grid(column=1, row=4)
+        self.udmButton.grid(column=1, row=5)
 
         ### End load ###
 
@@ -269,5 +298,3 @@ class XmlGUI:
 
         # build/display window with the attached widgets
         window.mainloop()
-
-# run gui when file is run... ie type python gui3.py
