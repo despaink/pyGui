@@ -46,7 +46,7 @@ class XmlGUI:
         fileName = askopenfilename(title='Select a {} File'.format(filePurpose))
         if filePurpose == "Pressure":
             # Von Johannes Modifiziert
-            self.einlesenSucess.set("Pressure File choosen")
+            self.einlesenResult.set("Pressure File choosen")
             self.pressureFileName = fileName
             self.pressureButton["text"] = os.path.relpath(fileName,'')
             if ".xml" not in fileName:
@@ -92,7 +92,8 @@ class XmlGUI:
         #NoAr, WeAr,  Va
         combi = Data_Combiner(Narr, WAA, ValuePart)
         Data = combi.Arraysauslesen
-        self.einlesenSucess.set(round(ValuePart))
+        self.einlesenResult.set(round(ValuePart))
+        self.einlesenSucess = True
         #non finnished UDM-Manipulator
         #wrt = UDMwriter(Data)
         #wrt.write()
@@ -120,13 +121,13 @@ class XmlGUI:
 
     #Button Run Weldline Grader(dummie)
     def WeldLineGrader(self):
-        if self.einlesenResult == None:
+        if self.einlesenSucess == None:
             errMsg = "ERROR: Einlesen result is None, either it hasn't been executed or there was an error when it ran."
             print(errMsg)
             self.weldLineGraderResult.set(errMsg)
             return
         print(self.einlesenResult)
-        self.weldLineGraderResult.set(str(self.einlesenResult))
+        self.weldLineGraderResult.set((self.einlesenResult.get()))
 
     def runGUI(self):
         # initialize window
@@ -209,9 +210,9 @@ class XmlGUI:
         ### End load ###
 
         ### Begin Einlesen ###
-        self.einlesenSucess = tk.StringVar(window)
+        self.einlesenResult = tk.StringVar(window)
         #print(self.einlesenSucess)
-        self.einlesenSucess.set(self.PartGrade)
+        self.einlesenResult.set(self.PartGrade)
 
         self.weldLineGraderResult = tk.StringVar(window)
         self.weldLineGraderResult.set("Not Executed Yet")
@@ -221,7 +222,7 @@ class XmlGUI:
 
         einlesenLable = tk.Label(
             window,
-            textvariable=self.einlesenSucess,
+            textvariable=self.einlesenResult,
             wraplength=WRAPLENGTH,
             justify=tk.CENTER,
             width=LABEL_WIDTH,
