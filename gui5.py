@@ -44,35 +44,60 @@ class XmlGUI:
         self.dropOptions = ['_______','Layer 1', 'Layer 2',]
 
     ### Begin Button Functions ###
+
+    #based on Von Johannes Modifiziert which I liked
+    def isCorrectFileType(self, filePurpose, fileName, fileType):
+        if fileType not in fileName:
+            errmsg = "Wrong {} File Choosen".format(filePurpose)
+            self.einlesenResult.set(errmsg)
+            return False
+        return True
+
+
     #writing all filenames in their variables, changes button labels to file names
     def loadOnClick(self, filePurpose):
         fileName = askopenfilename(title='Select a {} File'.format(filePurpose))
         if filePurpose == "Pressure":
-            # Von Johannes Modifiziert
-            self.einlesenResult.set("Pressure File choosen")
             self.pressureFileName = fileName
             self.pressureButton["text"] = os.path.relpath(fileName,'')
-            if ".xml" not in fileName:
-                errmsg = "Wrong Pressure File Choosen"
-                self.einlesenSucess.set(errmsg)
-                self.pressureButton["text"] = "not an xml file..."
-            #     bis hierhinn
-            print(fileName)
+
+            if not self.isCorrectFileType(filePurpose,fileName,".xml"):
+                self.pressureButton["text"] = "Not an xml file."
+
         elif filePurpose == "Temperature":
             self.temperatureFileName = fileName
             self.temperatureButton["text"] = os.path.relpath(fileName,'')
-        elif filePurpose == "Weld":
+
+            if not self.isCorrectFileType(filePurpose,fileName,".xml"):
+                self.temperatureButton["text"] = "Not an xml file."
+       
+        elif filePurpose == "Weld Line":
             self.weldFileName = fileName
             self.weldButton["text"] = os.path.relpath(fileName,'')
-        elif filePurpose == "Surface":
+
+            if not self.isCorrectFileType(filePurpose,fileName,".xml"):
+                self.weldButton["text"] = "Not an xml file."
+       
+        elif filePurpose == "Weld Surface Movement":
             self.weldSurfaceMovementFileName = fileName
             self.weldSurfaceButton["text"] = os.path.relpath(fileName,'')
+
+            if not self.isCorrectFileType(filePurpose,fileName,".xml"):
+                self.weldSurfaceButton["text"] = "Not an xml file."
+       
         elif filePurpose == "Fill":
             self.fillFileName = fileName
             self.fillButton["text"] = os.path.relpath(fileName,'')
+
+            if not self.isCorrectFileType(filePurpose,fileName,".xml"):
+                self.fillButton["text"] = "Not an xml file."
+       
         elif filePurpose == "UDM":
             self.udmFileName = fileName
             self.udmButton["text"] = os.path.relpath(fileName,'')
+
+            if not self.isCorrectFileType(filePurpose,fileName,".udm"):
+                self.udmButton["text"] = "Not an udm file."
 
     #Run Grader Button
     def einlesenOnClick(self):
@@ -180,7 +205,7 @@ class XmlGUI:
             text="Load WeldLines.XML File",
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
-            command=lambda: self.loadOnClick("Weld")
+            command=lambda: self.loadOnClick("Weld Line")
         )
         self.weldButton.grid(column=1, row=2)
 
@@ -189,7 +214,7 @@ class XmlGUI:
             text="Load SurfaceMovement.XML File",
             width=BUTTON_WIDTH,
             height=BUTTON_HEIGHT,
-            command=lambda: self.loadOnClick("Surface")
+            command=lambda: self.loadOnClick("Weld Surface Movement")
         )
         self.weldSurfaceButton.grid(column=1, row=3)
 
