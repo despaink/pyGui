@@ -5,30 +5,25 @@ window = tk.Tk()
 window.geometry('350x400')
 
 #add widgets
-rocksLabel = tk.Label(
-    text="Python Rocks!",
-     bg="#34A2FE",
-     width=10,
-     height=5,
-     )
-
-rocksLabel.pack()
-
-clickMeButton = tk.Button(
-    text="Click me!",
-    width=25,
-    height=5,
-    bg="blue",
-    fg="yellow",
-    ) 
-
-clickMeButton.pack()
-
 entryLabel= tk.Label(text="Name")
 entry = tk.Entry()
 
 entryLabel.pack()
 entry.pack()
+
+dropOptions = ['_______','layer 1', 'layer 2',]
+dropOptionLabel = tk.StringVar(window)
+dropOptionLabel.set('_______')
+
+dropDown = tk.OptionMenu(window, dropOptionLabel, *dropOptions)
+
+dropDown.pack()
+
+#methods
+def change_option(*args):
+    print(dropOptionLabel.get())
+
+dropOptionLabel.trace('w', change_option)
 
 #build/display window with the attached widgets
 window.mainloop()
