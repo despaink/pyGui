@@ -41,7 +41,8 @@ class XmlGUI:
         self.udmButton = None
 
         self.dropOptionLabel = None
-        self.dropOptions = ['_______','Layer 1', 'Layer 2',]
+        self.dropOptions = ['_______','Layer 1', 'Layer 2','Layer 3','Layer 4',
+            'Layer 5','Layer 8','Layer 10','Layer 11','Layer 12']
 
     ### Begin Button Functions ###
 
@@ -127,20 +128,30 @@ class XmlGUI:
         #wrt.write()
         return
 
+    #dummies
+    def layerspecific(self, index):
+        if index < 6:
+            return index
+        else:
+            if index == 6:
+                return 8
+            elif index == 7:
+                return 10
+            elif index == 8:
+                return 11
+            elif index == 9:
+                return 12
+
     #dummie
     def onLayerChanged(self, *args):
         layerValue = self.dropOptionLabel.get()
+        layerIndex = self.dropOptions.index(layerValue)
 
-        if layerValue == self.dropOptions[1]:
-            self.layerResult.set(self.dropOptions[1])
-            #TODO insert non dummie here for layer 1
-
-        elif layerValue == self.dropOptions[2]:
-            self.layerResult.set(self.dropOptions[2])
-            #TODO insert non dummie here for layer 2
-        
+        if layerValue == self.dropOptions[0]:
+            self.layerResult.set("No Layer Selected")        
         else:
-            self.layerResult.set("No Layer Selected")
+            labelString = "Contains Weldline: {}\nGrade of Weldlines: {}".format( ((layerIndex % 2) == 1), self.layerspecific(layerIndex) )
+            self.layerResult.set(labelString)
 
     #not finnished jet
     #returns error message
