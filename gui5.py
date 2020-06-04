@@ -290,7 +290,7 @@ class XmlGUI:
         layerLable.grid(column=3, row=0)
 
         self.dropOptionLabel = tk.StringVar(window)
-        self.dropOptionLabel.set(self.dropOptions[0])
+        self.dropOptionLabel.set("Check the Layer")
 
         dropDown = tk.OptionMenu(
             window,
